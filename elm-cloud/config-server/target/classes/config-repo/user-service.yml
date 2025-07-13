@@ -1,0 +1,26 @@
+server:
+  port: 8081
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3311/elm?allowPublicKeyRetrieval=true&serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: 123123
+
+mybatis-plus:
+  mapper-locations: classpath*:mapper/*.xml
+  type-aliases-package: ynu.edu.userservice.po
+  global-config:
+    db-config:
+      id-type: auto
+
+# JWT配置
+jwt:
+  secret-key: elmcloud-secret-key
+  expire-time: 86400000
+
+# 日志配置
+logging:
+  level:
+    ynu.edu.userservice: debug 

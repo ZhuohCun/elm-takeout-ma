@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ynu.edu.businessservice.mapper.BusinessMapper">
+    
+    <!-- 分页查询商家列表 -->
+    <select id="selectBusinessPage" resultType="ynu.edu.businessservice.po.Business">
+        SELECT *
+        FROM business
+        <where>
+            <if test="businessName != null and businessName != ''">
+                AND business_name LIKE CONCAT('%', #{businessName}, '%')
+            </if>
+            <if test="orderTypeId != null">
+                AND order_type_id = #{orderTypeId}
+            </if>
+        </where>
+        ORDER BY business_id
+    </select>
+    
+    <!-- 根据商家类型分页查询商家 -->
+    <select id="selectBusinessPageByOrderType" resultType="ynu.edu.businessservice.po.Business">
+        SELECT *
+        FROM business
+        WHERE order_type_id = #{orderTypeId}
+        ORDER BY business_id
+    </select>
+</mapper> 

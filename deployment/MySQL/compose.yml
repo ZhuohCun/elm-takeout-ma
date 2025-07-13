@@ -1,0 +1,182 @@
+version: "3.8"
+
+services:
+  address-master:
+    build: ./mysql/address/master
+    container_name: address-master
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "123123"
+    volumes:
+      - address-master-data:/var/lib/mysql
+    networks:
+      - db_net
+
+  address-slave1:
+    build: ./mysql/address/slave1
+    container_name: address-slave1
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "123123"
+    depends_on:
+      - address-master
+    volumes:
+      - address-slave1-data:/var/lib/mysql
+    networks:
+      - db_net
+
+  address-slave2:
+    build: ./mysql/address/slave2
+    container_name: address-slave2
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "123123"
+    depends_on:
+      - address-master
+    volumes:
+      - address-slave2-data:/var/lib/mysql
+    networks:
+      - db_net
+
+  business-master:
+    build: ./mysql/business/master
+    container_name: business-master
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "123123"
+    volumes:
+      - business-master-data:/var/lib/mysql
+    networks:
+      - db_net
+
+  business-slave1:
+    build: ./mysql/business/slave1
+    container_name: business-slave1
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "123123"
+    depends_on:
+      - business-master
+    volumes:
+      - business-slave1-data:/var/lib/mysql
+    networks:
+      - db_net
+
+  business-slave2:
+    build: ./mysql/business/slave2
+    container_name: business-slave2
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "123123"
+    depends_on:
+      - business-master
+    volumes:
+      - business-slave2-data:/var/lib/mysql
+    networks:
+      - db_net
+
+  order-master:
+    build: ./mysql/order/master
+    container_name: order-master
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "123123"
+    volumes:
+      - order-master-data:/var/lib/mysql
+    networks:
+      - db_net
+
+  order-slave1:
+    build: ./mysql/order/slave1
+    container_name: order-slave1
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "123123"
+    depends_on:
+      - order-master
+    volumes:
+      - order-slave1-data:/var/lib/mysql
+    networks:
+      - db_net
+
+  order-slave2:
+    build: ./mysql/order/slave2
+    container_name: order-slave2
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "123123"
+    depends_on:
+      - order-master
+    volumes:
+      - order-slave2-data:/var/lib/mysql
+    networks:
+      - db_net
+
+  user-master:
+    build: ./mysql/user/master
+    container_name: user-master
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "123123"
+    volumes:
+      - user-master-data:/var/lib/mysql
+    networks:
+      - db_net
+
+  user-slave1:
+    build: ./mysql/user/slave1
+    container_name: user-slave1
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "123123"
+    depends_on:
+      - user-master
+    volumes:
+      - user-slave1-data:/var/lib/mysql
+    networks:
+      - db_net
+
+  user-slave2:
+    build: ./mysql/user/slave2
+    container_name: user-slave2
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "123123"
+    depends_on:
+      - user-master
+    volumes:
+      - user-slave2-data:/var/lib/mysql
+    networks:
+      - db_net
+
+  nginx:
+    image: nginx:alpine
+    container_name: mysql-nginx
+    restart: always
+    ports:
+      - "3308:3308"  # address
+      - "3309:3309"  # business
+      - "3310:3310"  # order
+      - "3311:3311"  # user
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - db_net
+
+volumes:
+  address-master-data: {}
+  address-slave1-data: {}
+  address-slave2-data: {}
+  business-master-data: {}
+  business-slave1-data: {}
+  business-slave2-data: {}
+  order-master-data: {}
+  order-slave1-data: {}
+  order-slave2-data: {}
+  user-master-data: {}
+  user-slave1-data: {}
+  user-slave2-data: {}
+
+networks:
+  db_net:
+    driver: bridge

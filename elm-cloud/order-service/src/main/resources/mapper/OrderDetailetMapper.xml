@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ynu.edu.orderservice.mapper.OrderDetailetMapper">
+    
+    <!-- 根据订单ID查询订单明细 -->
+    <select id="listOrderDetailetByOrderId" resultType="ynu.edu.orderservice.po.OrderDetailet">
+        SELECT *
+        FROM order_detailet
+        WHERE order_id = #{orderId}
+    </select>
+</mapper> 

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ynu.edu.orderservice.mapper.CartMapper">
+    
+    <!-- 根据用户ID和商家ID查询购物车 -->
+    <select id="listCartByUserIdAndBusinessId" resultType="ynu.edu.orderservice.po.Cart">
+        SELECT *
+        FROM cart
+        WHERE user_id = #{userId}
+        AND business_id = #{businessId}
+        AND order_id IS NULL
+    </select>
+    
+    <!-- 根据用户ID和商家ID查询所有购物车项（包括已加入订单的项） -->
+    <select id="listAllCartByUserIdAndBusinessId" resultType="ynu.edu.orderservice.po.Cart">
+        SELECT *
+        FROM cart
+        WHERE user_id = #{userId}
+        AND business_id = #{businessId}
+    </select>
+    
+    <!-- 更新购物车中的订单ID -->
+    <update id="updateOrderIdByCartId">
+        UPDATE cart
+        SET order_id = #{orderId}
+        WHERE cart_id = #{cartId}
+    </update>
+</mapper> 

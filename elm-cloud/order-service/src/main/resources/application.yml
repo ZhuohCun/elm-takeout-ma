@@ -1,0 +1,72 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: ORDER-SERVICE
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3310/elm?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: 123123
+  cloud:
+    circuitbreaker:
+      resilience4j:
+        enabled: true
+
+mybatis-plus:
+  mapper-locations: classpath*:mapper/*.xml
+  type-aliases-package: ynu.edu.orderservice.po
+  global-config:
+    db-config:
+      id-type: auto
+
+# Feign配置
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 8000
+        readTimeout: 8000
+  compression:
+    request:
+      enabled: true
+    response:
+      enabled: true
+  circuitbreaker:
+    enabled: true
+  hystrix:
+    enabled: false
+
+# Resilience4j Circuit Breaker配置
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10000
+        permittedNumberOfCallsInHalfOpenState: 5
+        registerHealthIndicator: true
+    instances:
+      business-service:
+        baseConfig: default
+      food-service:
+        baseConfig: default
+
+# 暴露所有端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    ynu.edu.orderservice: debug
+    ynu.edu.orderservice.feign: debug 

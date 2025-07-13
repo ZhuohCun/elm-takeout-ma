@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ynu.edu.orderservice.mapper.OrdersMapper">
+    
+    <!-- 根据用户ID查询订单 -->
+    <select id="listOrdersByUserId" resultType="ynu.edu.orderservice.po.Orders">
+        SELECT *
+        FROM orders
+        WHERE user_id = #{userId}
+        ORDER BY order_date DESC
+    </select>
+    
+    <!-- 更新订单状态 -->
+    <update id="updateOrderState">
+        UPDATE orders
+        SET order_state = #{orderState}
+        WHERE order_id = #{orderId}
+    </update>
+</mapper> 
